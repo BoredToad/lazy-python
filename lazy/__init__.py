@@ -5,10 +5,9 @@
 
 # TODO:
 # - Make a function decorator for making functions
-from collections.abc import Callable, Iterable
-from typing import Self
+from collections.abc import Callable, Iterable, Iterator
 
-type __Func[T] = Callable[[T], T]
+type _Func[T] = Callable[[T], T]
 
 
 class InfCollection[T](Iterable):
@@ -28,10 +27,10 @@ class InfCollection[T](Iterable):
         By default it repeats the first value you give
         The first value you give is not evaluated, but used for the first evaluation
         """
-        self.__eval: __Func[T] = lambda x: x
+        self.__eval: _Func[T] = lambda x: x
         self.__last: T = first
 
-    def func(self, func: __Func[T]) -> None:
+    def func(self, func: _Func[T]) -> None:
         """
         Decorator that sets the function to be used for further evaluation
         """
@@ -45,3 +44,6 @@ class InfCollection[T](Iterable):
     def take(self, n: int = 1) -> list[T]:
         # NOTE: will get more complicated as I add pre evaluation and shit
         return [self.__eval(self.__last) for _ in range(n)]
+
+    def __iter__(self) -> Iterator[T]:
+        raise NotImplementedError
