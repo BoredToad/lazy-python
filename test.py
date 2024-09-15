@@ -1,29 +1,34 @@
 import unittest
 
-from lazy import InfCollection
+from lazy import InfCollection, TempQueueTypeForTesting
 
 
-class BasicTest(unittest.TestCase):
-    def test_same(self):
-        collection: InfCollection = InfCollection("SAME")
-        for _ in range(10):
-            self.assertEqual("SAME", collection.take()[0])
+class LazyQueueTest(unittest.TestCase):
+    def test_queue(self):
+        queue: TempQueueTypeForTesting = TempQueueTypeForTesting()
+        queue.transform(lambda x: x * 2)
+        queue.transform(lambda x: x + 1)
 
-    def test_simple_int(self):
-        collection: InfCollection = InfCollection(0)
-        collection.func(lambda x: x + 1)
+        for i in range(10):
+            self.assertEqual(i * 2 + 1, queue.eval(i))
 
-        for i in range(1, 11):
-            self.assertEqual(i, collection.take()[0])
+    def test_complex_obj(self):
+        queue: TempQueueTypeForTesting = TempQueueTypeForTesting()
 
-    def test_takes_multiple(self):
-        collection: InfCollection = InfCollection(1)
+        @queue.transform
+        def _(x: list[int]):
+            x.append(5)
+            return x
 
-        @collection.func
-        def _(x: int) -> int:
-            return x * 2
+        queue.mutate(lambda x: x.append(55))
 
-        self.assertEqual([2, 4, 8, 16, 32], collection.take(5))
+        @queue.mutate
+        def _(x: list[int]):
+            x[1] -= 3
+
+        queue.transform(lambda x: sum(x))
+
+        self.assertEqual(100, queue.eval([43]))
 
 
 if __name__ == "__main__":
