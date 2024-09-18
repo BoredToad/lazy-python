@@ -87,6 +87,13 @@ class InfiniteTest(unittest.TestCase):
         l: lazy.LazyCollection = lazy.LazyCollection(lazy.InfGenerator.cycle(range(1, 4)))
         self.assertEqual([1, 2, 3, 1, 2], l.take(5))
 
+class FilterTest(unittest.TestCase):
+    def test_filter(self):
+        l: lazy.LazyCollection = lazy.LazyCollection(lazy.InfGenerator.cycle(range(1, 4)))
+        l.map(lambda x: x * 2)
+        l.filter(lambda x: x != 4)
+        self.assertEqual([2, 6, 2, 6, 2], l.take(5))
+
 
 if __name__ == "__main__":
     unittest.main()

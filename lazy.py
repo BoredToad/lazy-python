@@ -4,6 +4,7 @@ from typing import Any, Optional, Self
 
 type _Transformation[T, K] = Callable[[T], K]
 type _Mutation[T] = Callable[[T], Any]
+type _Filter[T] = Callable[[T], bool]
 
 
 class TransformQueue:
@@ -79,7 +80,6 @@ class LazyObj:
         """Same as calling .eval()"""
         return self.eval()
 
-
 class LazyCollection[T](Iterator):
     """Lazily evaluated collection"""
 
@@ -93,6 +93,19 @@ class LazyCollection[T](Iterator):
     def foreach(self, mutation: _Mutation) -> None:
         self.__queue.mutate(mutation)
 
+    class Filtered(Exception): ...
+
+    def filter(self, filter: _Filter) -> None:
+        """Filters out items
+
+        keeps items that return True
+        """
+        def wrapper(obj: T) -> T:
+            if not filter(obj):
+                raise LazyCollection.Filtered
+            return obj
+        self.map(wrapper)
+
     def take(self, n: int = 1) -> list[object]:
         """Returns the next n items of the collection
 
@@ -103,7 +116,10 @@ class LazyCollection[T](Iterator):
             for _ in (
                 range(n) if n > 0 else iter(int, 1)
             ):  # really hacky way to do it lmfao
-                objects.append(self.__queue.eval(next(self.__it)))
+                try:
+                    objects.append(self.__queue.eval(next(self.__it)))
+                except LazyCollection.Filtered:
+                    objects.append(self.__queue.eval(next(self.__it))) # lmfao
         except StopIteration:
             pass
         return objects
