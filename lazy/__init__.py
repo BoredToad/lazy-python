@@ -1,28 +1,20 @@
-# TODO:
-# - make it so you can take (and therefore evaluate) 1 or multiple values
-# - later make it so you can evaluate set amount
-# of items, so they're ready to be taken so you can improve performance
-
-# NOTE: YOU HAVE TO BE ABLE TO MAP operations that will only be excecuted after a final
-# take(), so a big rewrite is gonna happen lol
-
-# TODO:
-# - Make a function decorator for making functions
 from collections.abc import Callable, Iterable, Iterator
-from typing import Any, Optional, Self
+from typing import Any, Optional
 
-type _Func[T] = Callable[[T], T]
+type _Transformation[T, K] = Callable[[T], K]
+type _Mutation[T] = Callable[[T], Any]
 
-# NOTE: considering making a custom queue class, probably not, but possibly faster than a list,
-# definitely more type safe at least
-type _Transform[T, K] = Callable[[T], K]
-type _Mutate[T] = Callable[[T], None]
 
-class __TransformQueue:
+class TransformQueue:
+    """Queue of transformations and mutations
+
+    All mutations get converted into transforms under the hood
+    """
+
     class __Node[T, K]:
-        def __init__(self, transform: _Transform[T, K]) -> None:
-            self.transform: _Transform = transform
-            self.next: Optional[__TransformQueue.__Node] = None
+        def __init__(self, transform: _Transformation[T, K]) -> None:
+            self.transform: _Transformation = transform
+            self.next: Optional[TransformQueue.__Node] = None
 
         def eval(self, previous: T) -> K:
             if not self.next:
@@ -30,8 +22,8 @@ class __TransformQueue:
             return self.next.eval(self.transform(previous))
 
     def __init__(self) -> None:
-        self.__first: Optional[__TransformQueue.__Node] = None
-        self.__last: Optional[__TransformQueue.__Node] = None
+        self.__first: Optional[TransformQueue.__Node] = None
+        self.__last: Optional[TransformQueue.__Node] = None
 
     # really wish it was better typed
     def eval(self, obj: object) -> object:
@@ -39,92 +31,99 @@ class __TransformQueue:
             return obj
         return self.__first.eval(obj)
 
-    def transform(self, transform: _Transform) -> None:
+    def transform(self, transform: _Transformation) -> None:
         if not self.__first:
             self.__first = self.__Node(transform)
             self.__last = self.__first
             return
-        new: __TransformQueue.__Node = self.__Node(transform)
-        self.__last.next = new # pyright: ignore
+        new: TransformQueue.__Node = self.__Node(transform)
+        self.__last.next = new  # pyright: ignore
         self.__last = new
 
-    def mutate(self, mutation: _Mutate) -> None:
+    def mutate(self, mutation: _Mutation) -> None:
         def wrapper(obj: object) -> object:
             mutation(obj)
             return obj
+
         self.transform(wrapper)
 
-class TempQueueTypeForTesting(__TransformQueue): ...
 
-class LazyObj[T]:
-    """
-    Lazily evaluated object
+class LazyObj:
+    """Lazily evaluated object"""
 
-    """
-    def __init__(self, obj: T) -> None:
-        self.__obj: T = obj
+    def __init__(self, obj: object) -> None:
+        self.__obj: object = obj
+        self.__queue: TransformQueue = TransformQueue()
+
+    def transform(self, transformation: _Transformation) -> None:
+        """Takes the object as input, and transforms it into the return value"""
+
+        self.__queue.transform(transformation)
+
+    def mutate(self, mutation: _Mutation) -> None:
+        """Mutates the object
+
+        Immutable types like strings and integers won't work
+        use transform instead
+        """
+        self.__queue.mutate(mutation)
+
+    def eval(self) -> object:
+        """Evaluates and returns the object."""
+        self.__obj = self.__queue.eval(self.__obj)
+        self.__queue = TransformQueue()
+        return self.__obj
+
+    def __invert__(self) -> object:
+        """Same as calling .eval()"""
+        return self.eval()
 
 
-class LazyCollection[T](Iterable):
-    """
-    Lazily evaluated finite collection
+class LazyCollection[T](Iterator):
+    """Lazily evaluated finite collection"""
 
-    """
-
-    # TODO: add support for more interesting functions
     def __init__(self, items: Iterable[T]) -> None:
-        # self.__operations:
-        self.__initial: Iterable[T] = items
+        self.__it: Iterator = iter(items)
+        self.__queue = TransformQueue()
 
-    def take(self, n: int = 1) -> list[T]:
+    def map(self, transformation: _Transformation) -> None:
+        self.__queue.transform(transformation)
+
+    def foreach(self, mutation: _Mutation) -> None:
+        self.__queue.mutate(mutation)
+
+    def take(self, n: int = 1) -> list[object]:
+        """Returns the next n items of the collection
+
+        0 or less returns the rest of the collection
         """
-        Returns the next n items of the collection
-        """
-        # NOTE: does not work as intended as it will not continue upon the next iteration
-        initial: Iterator[T] = iter(self.__initial)
-        return [next(initial) for _ in range(n)]
+        objects: list[object] = []
+        try:
+            for _ in (
+                range(n) if n > 0 else iter(int, 1)
+            ):  # really hacky way to do it lmfao
+                objects.append(self.__queue.eval(next(self.__it)))
+        except StopIteration:
+            pass
+        return objects
 
-    def __iter__(self) -> Iterator[T]:
-        raise NotImplementedError
+    # def __iter__(self) -> Iterator[object]:
+    #     return self
+
+    def __next__(self) -> object:
+        l: list[object] = self.take()
+        if not l:
+            raise StopIteration
+        return l[0]
 
 
-class IteratedOverInfiniteCollection(Exception): ...
+type GenFunc[T] = Callable[[T], T]
 
-
-class InfCollection[T](LazyCollection):
-    """
-    Lazily evaluated infinite collection
-
-    """
-
-    # TODO: add support for more interesting functions
-    def __init__(self, first: T) -> None:
-        """
-        Constructor for Infinite Collection
-
-        By default it repeats the first value you give
-        The first value you give is not evaluated, but used for the first evaluation
-        """
-        self.__eval: _Func[T] = lambda x: x
+class InfGenerator[T](Iterator):
+    def __init__(self, first: T, gen_func: GenFunc[T]) -> None:
         self.__last: T = first
+        self.__gen: GenFunc[T] = gen_func
 
-    def func(self, func: _Func[T]) -> None:
-        """
-        Decorator that sets the function to be used for further evaluation
-        """
-
-        def wrapper(arg: T):
-            self.__last = func(arg)
-            return self.__last
-
-        self.__eval = wrapper
-
-    def take(self, n: int = 1) -> list[T]:
-        """
-        Returns the next n items of the collection
-        """
-        # NOTE: will get more complicated as I add pre evaluation and shit
-        return [self.__eval(self.__last) for _ in range(n)]
-
-    def __iter__(self) -> Iterator[T]:
-        raise IteratedOverInfiniteCollection
+    def __next__(self) -> T:
+        self.__last = self.__gen(self.__last)
+        return self.__last
