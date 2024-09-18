@@ -83,6 +83,10 @@ class InfiniteTest(unittest.TestCase):
         l.map(lambda x: x * 2)
         self.assertEqual([2, 4, 6, 8, 10], l.take(5))
 
+    def test_cycle(self):
+        l: lazy.LazyCollection = lazy.LazyCollection(lazy.InfGenerator.cycle(range(1, 4)))
+        self.assertEqual([1, 2, 3, 1, 2], l.take(5))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,6 @@
 from collections.abc import Callable, Iterable, Iterator
-from typing import Any, Optional
+from copy import deepcopy
+from typing import Any, Optional, Self
 
 type _Transformation[T, K] = Callable[[T], K]
 type _Mutation[T] = Callable[[T], Any]
@@ -80,7 +81,7 @@ class LazyObj:
 
 
 class LazyCollection[T](Iterator):
-    """Lazily evaluated finite collection"""
+    """Lazily evaluated collection"""
 
     def __init__(self, items: Iterable[T]) -> None:
         self.__it: Iterator = iter(items)
@@ -107,9 +108,6 @@ class LazyCollection[T](Iterator):
             pass
         return objects
 
-    # def __iter__(self) -> Iterator[object]:
-    #     return self
-
     def __next__(self) -> object:
         l: list[object] = self.take()
         if not l:
@@ -120,10 +118,38 @@ class LazyCollection[T](Iterator):
 type GenFunc[T] = Callable[[T], T]
 
 class InfGenerator[T](Iterator):
+    """Generates an infinite Iterator
+
+    Be careful when iterating over
+    """
     def __init__(self, first: T, gen_func: GenFunc[T]) -> None:
+        """Basic constructor
+
+        works for basic usecases
+        """
         self.__last: T = first
         self.__gen: GenFunc[T] = gen_func
 
     def __next__(self) -> T:
         self.__last = self.__gen(self.__last)
         return self.__last
+
+    class __Cycler(Iterator[T]):
+        # I really dislike this implementation,
+        # but I'm too dumb to do something better
+        def __init__(self, origin: Iterable[T]) -> None:
+            self.__origin: Iterator[T] = iter(origin)
+            self.__cur: Iterator[T] = deepcopy(self.__origin)
+        def __next__(self) -> T:
+            try:
+                ret: T = next(self.__cur)
+            except StopIteration:
+                self.__cur = deepcopy(self.__origin)
+                ret: T = next(self.__cur)
+            return ret
+
+    @staticmethod
+    def cycle(origin: Iterable[T]) -> Self: # pyright: ignore
+        """Creates a generator that cycles between the given values"""
+        it: InfGenerator.__Cycler = InfGenerator.__Cycler(origin)
+        return InfGenerator(None, lambda _: next(it))
