@@ -88,9 +88,15 @@ class LazyCollection[T](Iterator):
         self.__queue = TransformQueue()
 
     def map(self, transformation: _Transformation) -> None:
+        """Transforms the Collection"""
         self.__queue.transform(transformation)
 
     def foreach(self, mutation: _Mutation) -> None:
+        """Mutates the collection
+
+        Beware when mutating immutable types
+        use map instead
+        """
         self.__queue.mutate(mutation)
 
     class Filtered(Exception): ...

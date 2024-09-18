@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module lazy</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">lazy</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/maxim/Projects/python/lazy/lazy.py">/home/maxim/Projects/python/lazy/lazy.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="lazy.html#LazyObj">LazyObj</a>
+</dt><dt class="heading-text"><a href="lazy.html#TransformQueue">TransformQueue</a>
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="collections.abc.html#Iterator">collections.abc.Iterator</a>(<a href="collections.abc.html#Iterable">collections.abc.Iterable</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="lazy.html#InfGenerator">InfGenerator</a>(<a href="collections.abc.html#Iterator">collections.abc.Iterator</a>, <a href="typing.html#Generic">typing.Generic</a>)
+</dt><dt class="heading-text"><a href="lazy.html#LazyCollection">LazyCollection</a>(<a href="collections.abc.html#Iterator">collections.abc.Iterator</a>, <a href="typing.html#Generic">typing.Generic</a>)
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="typing.html#Generic">typing.Generic</a>(<a href="builtins.html#object">builtins.object</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="lazy.html#InfGenerator">InfGenerator</a>(<a href="collections.abc.html#Iterator">collections.abc.Iterator</a>, <a href="typing.html#Generic">typing.Generic</a>)
+</dt><dt class="heading-text"><a href="lazy.html#LazyCollection">LazyCollection</a>(<a href="collections.abc.html#Iterator">collections.abc.Iterator</a>, <a href="typing.html#Generic">typing.Generic</a>)
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="InfGenerator">class <strong>InfGenerator</strong></a>(<a href="collections.abc.html#Iterator">collections.abc.Iterator</a>, <a href="typing.html#Generic">typing.Generic</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#InfGenerator">InfGenerator</a>(first:&nbsp;T,&nbsp;gen_func:&nbsp;GenFunc[T])&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Generates&nbsp;an&nbsp;infinite&nbsp;<a href="collections.abc.html#Iterator">Iterator</a><br>
+&nbsp;<br>
+Be&nbsp;careful&nbsp;when&nbsp;iterating&nbsp;over<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="lazy.html#InfGenerator">InfGenerator</a></dd>
+<dd><a href="collections.abc.html#Iterator">collections.abc.Iterator</a></dd>
+<dd><a href="collections.abc.html#Iterable">collections.abc.Iterable</a></dd>
+<dd><a href="typing.html#Generic">typing.Generic</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="InfGenerator-__init__"><strong>__init__</strong></a>(self, first: T, gen_func: GenFunc[T]) -&gt; None</dt><dd><span class="code">Basic&nbsp;constructor<br>
+&nbsp;<br>
+works&nbsp;for&nbsp;basic&nbsp;usecases</span></dd></dl>
+
+<dl><dt><a name="InfGenerator-__next__"><strong>__next__</strong></a>(self) -&gt; T</dt><dd><span class="code">Return&nbsp;the&nbsp;next&nbsp;item&nbsp;from&nbsp;the&nbsp;iterator.&nbsp;When&nbsp;exhausted,&nbsp;raise&nbsp;StopIteration</span></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="InfGenerator-cycle"><strong>cycle</strong></a>(origin: collections.abc.Iterable[T]) -&gt; Self</dt><dd><span class="code">Creates&nbsp;a&nbsp;generator&nbsp;that&nbsp;cycles&nbsp;between&nbsp;the&nbsp;given&nbsp;values</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__abstractmethods__</strong> = frozenset()</dl>
+
+<dl><dt><strong>__orig_bases__</strong> = (&lt;class 'collections.abc.Iterator'&gt;, typing.Generic[T])</dl>
+
+<dl><dt><strong>__parameters__</strong> = (T,)</dl>
+
+<dl><dt><strong>__type_params__</strong> = (T,)</dl>
+
+<hr>
+Methods inherited from <a href="collections.abc.html#Iterator">collections.abc.Iterator</a>:<br>
+<dl><dt><a name="InfGenerator-__iter__"><strong>__iter__</strong></a>(self)</dt></dl>
+
+<hr>
+Class methods inherited from <a href="collections.abc.html#Iterator">collections.abc.Iterator</a>:<br>
+<dl><dt><a name="InfGenerator-__subclasshook__"><strong>__subclasshook__</strong></a>(C)</dt><dd><span class="code">Abstract&nbsp;classes&nbsp;can&nbsp;override&nbsp;this&nbsp;to&nbsp;customize&nbsp;issubclass().<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;invoked&nbsp;early&nbsp;on&nbsp;by&nbsp;abc.ABCMeta.__subclasscheck__().<br>
+It&nbsp;should&nbsp;return&nbsp;True,&nbsp;False&nbsp;or&nbsp;NotImplemented.&nbsp;&nbsp;If&nbsp;it&nbsp;returns<br>
+NotImplemented,&nbsp;the&nbsp;normal&nbsp;algorithm&nbsp;is&nbsp;used.&nbsp;&nbsp;Otherwise,&nbsp;it<br>
+overrides&nbsp;the&nbsp;normal&nbsp;algorithm&nbsp;(and&nbsp;the&nbsp;outcome&nbsp;is&nbsp;cached).</span></dd></dl>
+
+<hr>
+Class methods inherited from <a href="collections.abc.html#Iterable">collections.abc.Iterable</a>:<br>
+<dl><dt><a name="InfGenerator-__class_getitem__"><strong>__class_getitem__</strong></a> = GenericAlias(...)</dt><dd><span class="code">Represent&nbsp;a&nbsp;<a href="https://peps.python.org/pep-0585/">PEP&nbsp;585</a>&nbsp;generic&nbsp;type<br>
+&nbsp;<br>
+E.g.&nbsp;for&nbsp;t&nbsp;=&nbsp;list[int],&nbsp;t.__origin__&nbsp;is&nbsp;list&nbsp;and&nbsp;t.__args__&nbsp;is&nbsp;(int,).</span></dd></dl>
+
+<hr>
+Class methods inherited from <a href="typing.html#Generic">typing.Generic</a>:<br>
+<dl><dt><a name="InfGenerator-__init_subclass__"><strong>__init_subclass__</strong></a>(...)</dt><dd><span class="code">Function&nbsp;to&nbsp;initialize&nbsp;subclasses.</span></dd></dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="LazyCollection">class <strong>LazyCollection</strong></a>(<a href="collections.abc.html#Iterator">collections.abc.Iterator</a>, <a href="typing.html#Generic">typing.Generic</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#LazyCollection">LazyCollection</a>(items:&nbsp;collections.abc.Iterable[T])&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Lazily&nbsp;evaluated&nbsp;collection<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="lazy.html#LazyCollection">LazyCollection</a></dd>
+<dd><a href="collections.abc.html#Iterator">collections.abc.Iterator</a></dd>
+<dd><a href="collections.abc.html#Iterable">collections.abc.Iterable</a></dd>
+<dd><a href="typing.html#Generic">typing.Generic</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="LazyCollection-__init__"><strong>__init__</strong></a>(self, items: collections.abc.Iterable[T]) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="LazyCollection-__next__"><strong>__next__</strong></a>(self) -&gt; object</dt><dd><span class="code">Return&nbsp;the&nbsp;next&nbsp;item&nbsp;from&nbsp;the&nbsp;iterator.&nbsp;When&nbsp;exhausted,&nbsp;raise&nbsp;StopIteration</span></dd></dl>
+
+<dl><dt><a name="LazyCollection-filter"><strong>filter</strong></a>(self, filter: _Filter) -&gt; None</dt><dd><span class="code">Filters&nbsp;out&nbsp;items<br>
+&nbsp;<br>
+keeps&nbsp;items&nbsp;that&nbsp;return&nbsp;True</span></dd></dl>
+
+<dl><dt><a name="LazyCollection-foreach"><strong>foreach</strong></a>(self, mutation: _Mutation) -&gt; None</dt><dd><span class="code">Mutates&nbsp;the&nbsp;collection<br>
+&nbsp;<br>
+Beware&nbsp;when&nbsp;mutating&nbsp;immutable&nbsp;types<br>
+use&nbsp;map&nbsp;instead</span></dd></dl>
+
+<dl><dt><a name="LazyCollection-map"><strong>map</strong></a>(self, transformation: _Transformation) -&gt; None</dt><dd><span class="code">Transforms&nbsp;the&nbsp;Collection</span></dd></dl>
+
+<dl><dt><a name="LazyCollection-take"><strong>take</strong></a>(self, n: int = 1) -&gt; list[object]</dt><dd><span class="code">Returns&nbsp;the&nbsp;next&nbsp;n&nbsp;items&nbsp;of&nbsp;the&nbsp;collection<br>
+&nbsp;<br>
+0&nbsp;or&nbsp;less&nbsp;returns&nbsp;the&nbsp;rest&nbsp;of&nbsp;the&nbsp;collection</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>Filtered</strong> = &lt;class 'lazy.LazyCollection.Filtered'&gt;</dl>
+
+<dl><dt><strong>__abstractmethods__</strong> = frozenset()</dl>
+
+<dl><dt><strong>__orig_bases__</strong> = (&lt;class 'collections.abc.Iterator'&gt;, typing.Generic[T])</dl>
+
+<dl><dt><strong>__parameters__</strong> = (T,)</dl>
+
+<dl><dt><strong>__type_params__</strong> = (T,)</dl>
+
+<hr>
+Methods inherited from <a href="collections.abc.html#Iterator">collections.abc.Iterator</a>:<br>
+<dl><dt><a name="LazyCollection-__iter__"><strong>__iter__</strong></a>(self)</dt></dl>
+
+<hr>
+Class methods inherited from <a href="collections.abc.html#Iterator">collections.abc.Iterator</a>:<br>
+<dl><dt><a name="LazyCollection-__subclasshook__"><strong>__subclasshook__</strong></a>(C)</dt><dd><span class="code">Abstract&nbsp;classes&nbsp;can&nbsp;override&nbsp;this&nbsp;to&nbsp;customize&nbsp;issubclass().<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;invoked&nbsp;early&nbsp;on&nbsp;by&nbsp;abc.ABCMeta.__subclasscheck__().<br>
+It&nbsp;should&nbsp;return&nbsp;True,&nbsp;False&nbsp;or&nbsp;NotImplemented.&nbsp;&nbsp;If&nbsp;it&nbsp;returns<br>
+NotImplemented,&nbsp;the&nbsp;normal&nbsp;algorithm&nbsp;is&nbsp;used.&nbsp;&nbsp;Otherwise,&nbsp;it<br>
+overrides&nbsp;the&nbsp;normal&nbsp;algorithm&nbsp;(and&nbsp;the&nbsp;outcome&nbsp;is&nbsp;cached).</span></dd></dl>
+
+<hr>
+Class methods inherited from <a href="collections.abc.html#Iterable">collections.abc.Iterable</a>:<br>
+<dl><dt><a name="LazyCollection-__class_getitem__"><strong>__class_getitem__</strong></a> = GenericAlias(...)</dt><dd><span class="code">Represent&nbsp;a&nbsp;<a href="https://peps.python.org/pep-0585/">PEP&nbsp;585</a>&nbsp;generic&nbsp;type<br>
+&nbsp;<br>
+E.g.&nbsp;for&nbsp;t&nbsp;=&nbsp;list[int],&nbsp;t.__origin__&nbsp;is&nbsp;list&nbsp;and&nbsp;t.__args__&nbsp;is&nbsp;(int,).</span></dd></dl>
+
+<hr>
+Class methods inherited from <a href="typing.html#Generic">typing.Generic</a>:<br>
+<dl><dt><a name="LazyCollection-__init_subclass__"><strong>__init_subclass__</strong></a>(...)</dt><dd><span class="code">Function&nbsp;to&nbsp;initialize&nbsp;subclasses.</span></dd></dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="LazyObj">class <strong>LazyObj</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#LazyObj">LazyObj</a>(obj:&nbsp;<a href="builtins.html#object">object</a>)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Lazily&nbsp;evaluated&nbsp;<a href="builtins.html#object">object</a><br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="LazyObj-__init__"><strong>__init__</strong></a>(self, obj: object) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="LazyObj-__invert__"><strong>__invert__</strong></a>(self) -&gt; object</dt><dd><span class="code">Same&nbsp;as&nbsp;calling&nbsp;.<a href="#LazyObj-eval">eval</a>()</span></dd></dl>
+
+<dl><dt><a name="LazyObj-eval"><strong>eval</strong></a>(self) -&gt; object</dt><dd><span class="code">Evaluates&nbsp;and&nbsp;returns&nbsp;the&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
+
+<dl><dt><a name="LazyObj-mutate"><strong>mutate</strong></a>(self, mutation: _Mutation) -&gt; None</dt><dd><span class="code">Mutates&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+Immutable&nbsp;types&nbsp;like&nbsp;strings&nbsp;and&nbsp;integers&nbsp;won't&nbsp;work<br>
+use&nbsp;transform&nbsp;instead</span></dd></dl>
+
+<dl><dt><a name="LazyObj-transform"><strong>transform</strong></a>(self, transformation: _Transformation) -&gt; None</dt><dd><span class="code">Takes&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;as&nbsp;input,&nbsp;and&nbsp;transforms&nbsp;it&nbsp;into&nbsp;the&nbsp;return&nbsp;value</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="TransformQueue">class <strong>TransformQueue</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#TransformQueue">TransformQueue</a>()&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Queue&nbsp;of&nbsp;transformations&nbsp;and&nbsp;mutations<br>
+&nbsp;<br>
+All&nbsp;mutations&nbsp;get&nbsp;converted&nbsp;into&nbsp;transforms&nbsp;under&nbsp;the&nbsp;hood<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="TransformQueue-__init__"><strong>__init__</strong></a>(self) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="TransformQueue-eval"><strong>eval</strong></a>(self, obj: object) -&gt; object</dt><dd><span class="code">#&nbsp;really&nbsp;wish&nbsp;it&nbsp;was&nbsp;better&nbsp;typed</span></dd></dl>
+
+<dl><dt><a name="TransformQueue-mutate"><strong>mutate</strong></a>(self, mutation: _Mutation) -&gt; None</dt></dl>
+
+<dl><dt><a name="TransformQueue-transform"><strong>transform</strong></a>(self, transform: _Transformation) -&gt; None</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>GenFunc</strong> = GenFunc<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>Self</strong> = typing.Self</td></tr></table>
+</body></html>
